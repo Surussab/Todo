@@ -3,31 +3,54 @@ import { useState } from 'react';
 import logo from './AddQuest';
 
 import './App.css';
+
 import AddQuest from './AddQuest';
 
+import QuestList from './QuestList';
+
+
 function App() {
-  const[questList, setQuestList] = useState([]);
+  const questInStorage = JSON.parse(localStorage.getItem('quests'));
+  console.log(questInStorage);
+  const [questList, changeQuestList] = useState(
+    questInStorage !== undefined && questInStorage?
+      questInStorage : []
+  );
 
-function addNewQuest(questTitle){
-  const quest = questList.slice();
 
-  quest.push({
-    title: questTitle,
-    done:false
-  });
+  function setQuestList(list) {
+    localStorage.setItem('quests', JSON.stringify(list));
+    changeQuestList(list);
+  }
+  function addNewQuest(questTitle) {
+    const quests = questList.slice();
 
-  setQuestList(quests);
-  console.log(quests);
+    quests.push({
+      title: questTitle,
+      done: false
+    });
 
-}
+    setQuestList(quests);
+    console.log(quests);
+
+  }
+  function changeNthTask(n) {
+    const quests = questList.slice();
+    quests[n].done = !quests[n].done;
+    setQuestList(quests);
+  }
 
   return (
     <div className="App h-screen w-screen flex justify-center items-center">
       <div className='card w-[80%] h-[70%] shadow-md rounded-sm transform ease-out duration-500 items-center p-10 gap-5'>
         <h1 className='text-5x1 font-work font-bold w-fit text-center'>Quest to do</h1>
         <AddQuest saveNewQuest={addNewQuest}></AddQuest>
-        <p>Lista de quests</p>
-          <input type="reset" value="Clear" class="btn btn-success"/>
+        <QuestList list={questList} changeNthTask={changeNthTask} />
+        <input
+          onClick={() => setQuestList(questList.filter(q => !q.done))}
+          type="reset"
+          value="Clear"
+          class="btn btn-success" />
       </div>
     </div>
   );

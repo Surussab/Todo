@@ -15,7 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "tw": "npx tailwindcss -i src/pre.css -o src/App.css",
-    "tww": "npx tailwindcss - i src/css/pre.css -o src/App.css --watch",
+    "tww": "npx tailwindcss -i src/pre.css -o src/App.css --watch",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
